@@ -1,11 +1,13 @@
 ﻿using ClinicalFlow.Dtos.Prescriptions;
 using ClinicalFlow.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicalFlow.Controllers;
 
 [ApiController]
 [Route("api/encounters/{encounterId:int}/prescriptions")]
+[Authorize]
 public class PrescriptionsController : ControllerBase
 {
     private readonly IPrescriptionService _prescriptionService;

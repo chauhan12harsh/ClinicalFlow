@@ -18,6 +18,8 @@ namespace ClinicalFlow.Data
 
         public DbSet<PrescriptionMedication> PrescriptionMedications => Set<PrescriptionMedication>();
 
+        public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -131,6 +133,31 @@ namespace ClinicalFlow.Data
                     .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasIndex(pm => pm.PrescriptionId);
+            });
+
+            // Application User configuration
+            modelBuilder.Entity<ApplicationUser>(entity =>
+            {
+                entity.HasKey(u => u.ApplicationUserId);
+
+                entity.Property(u => u.FullName)
+                    .HasMaxLength(150)
+                    .IsRequired();
+
+                entity.Property(u => u.Email)
+                    .HasMaxLength(256)
+                    .IsRequired();
+
+                entity.HasIndex(u => u.Email)
+                    .IsUnique();
+
+                entity.Property(u => u.PasswordHash)
+                    .HasMaxLength(500)
+                    .IsRequired();
+
+                entity.Property(u => u.Role)
+                    .HasMaxLength(50)
+                    .IsRequired();
             });
         }
     }

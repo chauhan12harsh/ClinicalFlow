@@ -1,0 +1,501 @@
+{
+  "info": {
+    "_postman_id": "3e4b9f8b-0cf4-471d-91fb-454ebc477cd7",
+    "name": "Clinical-WorkFlow",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57478474"
+  },
+  "item": [
+    {
+      "name": "Patient",
+      "item": [
+        {
+          "name": "GetPatient",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/patients",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "patients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreatePatient",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}/api/patients",
+              "host": [
+                "{{base_url}"
+              ],
+              "path": [
+                "api",
+                "patients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetPatientById",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/patients/{patientId}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "{patientId}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdatePatient",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/patients/{patientId}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "{patientId}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeletePatient",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/patients/{patientId}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "{patientId}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\r\n\r\nif (pm.response.code === 200 && response.accessToken) {\r\n\r\n    // Decode JWT payload\r\n    const tokenParts = response.accessToken.split(\".\");\r\n    const payload = JSON.parse(atob(tokenParts[1]));\r\n\r\n    // Extract role\r\n    const role = payload[\"http://schemas.microsoft.com/ws/2008/06/identity/claims/role\"];\r\n\r\n    console.log(\"Logged in role:\", role);\r\n\r\n    // Save token based on role\r\n    if (role === \"Doctor\") {\r\n        pm.environment.set(\"doctor_token\", response.accessToken);\r\n        console.log(\"Doctor token saved successfully\");\r\n    }\r\n    else if (role === \"Admin\") {\r\n        pm.environment.set(\"admin_token\", response.accessToken);\r\n        console.log(\"Admin token saved successfully\");\r\n    }\r\n    else {\r\n        console.log(\"Unknown role:\", role);\r\n    }\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"doctor@example.com\",\r\n  \"password\": \"example@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Encounter",
+      "item": [
+        {
+          "name": "CreateEncounter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/encounters",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "encounters"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetEncounterByEncounterId",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}",
+                "description": "Doctor",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "description": "Admin"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/encounters/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "encounters",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetEnounterByPatientId",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}",
+                "description": "Doctor"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "description": "Admin",
+                "disabled": true
+              },
+              {
+                "key": "",
+                "value": "",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/encounters/patient/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "encounters",
+                "patient",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateEncounter",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/encounters/{encounterId}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "encounters",
+                "{encounterId}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "MarkEncounterAsComplete",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/encounters/{encounterId}/complete",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "encounters",
+                "{encounterId}",
+                "complete"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Prescription",
+      "item": [
+        {
+          "name": "GetPrescription",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/encounters/{encounterId}/prescriptions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "encounters",
+                "{encounterId}",
+                "prescriptions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreatePrescription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/encounters/{encounterId}/prescriptions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "encounters",
+                "{encounterId}",
+                "prescriptions"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

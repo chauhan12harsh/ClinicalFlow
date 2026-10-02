@@ -1,12 +1,14 @@
 ﻿
 using ClinicalFlow.DTOs.Patients;
 using ClinicalFlow.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicalFlow.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class PatientsController : ControllerBase
 {
     private readonly IPatientService _patientService;

@@ -1,12 +1,14 @@
 ﻿
 using ClinicalFlow.DTOs.Encounters;
 using ClinicalFlow.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicalFlow.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class EncountersController : ControllerBase
 {
     private readonly IEncounterService _encounterService;
