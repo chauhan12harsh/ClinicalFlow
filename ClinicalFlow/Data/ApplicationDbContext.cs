@@ -8,9 +8,9 @@ namespace ClinicalFlow.Data
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Patient> Patients => Set<Patient>();
 
-        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Doctor> Doctors => Set<Doctor>();
 
         public DbSet<Encounter> Encounters => Set<Encounter>();
 

@@ -16,16 +16,14 @@ public class EncounterService : IEncounterService
         _context = context;
     }
 
-    public async Task<EncounterResponse> CreateAsync(
-        CreateEncounterRequest request)
+    public async Task<EncounterResponse> CreateAsync( CreateEncounterRequest request)
     {
         bool patientExists = await _context.Patients
             .AnyAsync(p => p.PatientId == request.PatientId);
 
         if (!patientExists)
         {
-            throw new KeyNotFoundException(
-                $"Patient {request.PatientId} was not found.");
+            throw new KeyNotFoundException($"Patient {request.PatientId} was not found.");
         }
 
         bool doctorExists = await _context.Doctors
@@ -33,8 +31,7 @@ public class EncounterService : IEncounterService
 
         if (!doctorExists)
         {
-            throw new KeyNotFoundException(
-                $"Doctor {request.DoctorId} was not found.");
+            throw new KeyNotFoundException($"Doctor {request.DoctorId} was not found.");
         }
 
         var encounter = new Encounter
@@ -53,9 +50,8 @@ public class EncounterService : IEncounterService
 
         await _context.SaveChangesAsync();
 
-        return await GetByIdAsync(encounter.EncounterId)
-            ?? throw new InvalidOperationException(
-                "Encounter was created but could not be retrieved.");
+        return await GetByIdAsync(encounter.EncounterId) 
+            ?? throw new InvalidOperationException("Encounter was created but could not be retrieved.");
     }
 
     public async Task<EncounterResponse?> GetByIdAsync(int id)
@@ -80,8 +76,7 @@ public class EncounterService : IEncounterService
             .FirstOrDefaultAsync();
     }
 
-    public async Task<List<EncounterResponse>> GetByPatientIdAsync(
-        int patientId)
+    public async Task<List<EncounterResponse>> GetByPatientIdAsync(int patientId)
     {
         return await _context.Encounters
             .AsNoTracking()
@@ -104,9 +99,7 @@ public class EncounterService : IEncounterService
             .ToListAsync();
     }
 
-    public async Task<EncounterResponse?> UpdateAsync(
-        int id,
-        UpdateEncounterRequest request)
+    public async Task<EncounterResponse?> UpdateAsync( int id, UpdateEncounterRequest request)
     {
         var encounter = await _context.Encounters
             .FirstOrDefaultAsync(e => e.EncounterId == id);
@@ -118,8 +111,7 @@ public class EncounterService : IEncounterService
 
         if (encounter.Status != EncounterStatus.InProgress)
         {
-            throw new InvalidOperationException(
-                "Only in-progress encounters can be updated.");
+            throw new InvalidOperationException("Only in-progress encounters can be updated.");
         }
 
         encounter.ChiefComplaint = request.ChiefComplaint.Trim();
@@ -143,8 +135,7 @@ public class EncounterService : IEncounterService
        
         if (encounter.Status != EncounterStatus.InProgress)
         {
-            throw new InvalidOperationException(
-                "Only in-progress encounters can be completed.");
+            throw new InvalidOperationException("Only in-progress encounters can be completed.");
         }
 
         encounter.Status = EncounterStatus.Completed;

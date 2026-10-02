@@ -1,6 +1,7 @@
 using ClinicalFlow.Configuration;
 using ClinicalFlow.Data;
 using ClinicalFlow.Interfaces;
+using ClinicalFlow.Middleware;
 using ClinicalFlow.Models;
 using ClinicalFlow.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -120,7 +121,10 @@ if (app.Environment.IsDevelopment())
     }
 }
 
+
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -19,29 +19,18 @@ public class PatientsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(
-        CreatePatientRequest request)
+    public async Task<IActionResult> Create(CreatePatientRequest request)
     {
-        try
-        {
-            var patient = await _patientService.CreateAsync(request);
 
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = patient.PatientId },
-                patient);
-        }
-        catch (InvalidOperationException ex)
-        {
-            return Conflict(new { message = ex.Message });
-        }
+        var patient = await _patientService.CreateAsync(request);
+        return CreatedAtAction(nameof(GetById), new { id = patient.PatientId }, patient);
+
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var patients = await _patientService.GetAllAsync();
-
         return Ok(patients);
     }
 
@@ -52,10 +41,7 @@ public class PatientsController : ControllerBase
 
         if (patient is null)
         {
-            return NotFound(new
-            {
-                message = $"Patient with ID {id} was not found."
-            });
+            return NotFound(new { message = $"Patient with ID {id} was not found." });
         }
 
         return Ok(patient);
@@ -70,10 +56,7 @@ public class PatientsController : ControllerBase
 
         if (patient is null)
         {
-            return NotFound(new
-            {
-                message = $"Patient with ID {id} was not found."
-            });
+            return NotFound(new { message = $"Patient with ID {id} was not found." });
         }
 
         return Ok(patient);

@@ -5,8 +5,7 @@ namespace ClinicalFlow.Interfaces;
 
 public interface IEncounterService
 {
-    Task<EncounterResponse> CreateAsync(
-        CreateEncounterRequest request);
+    Task<EncounterResponse> CreateAsync(CreateEncounterRequest request);
 
     Task<EncounterResponse?> GetByIdAsync(int id);
 

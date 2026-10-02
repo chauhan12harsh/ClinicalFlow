@@ -19,22 +19,12 @@ public class EncountersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(
-        CreateEncounterRequest request)
+    public async Task<IActionResult> Create(CreateEncounterRequest request)
     {
-        try
-        {
-            var encounter = await _encounterService.CreateAsync(request);
 
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = encounter.EncounterId },
-                encounter);
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
+        var encounter = await _encounterService.CreateAsync(request);
+        return CreatedAtAction(nameof(GetById), new { id = encounter.EncounterId }, encounter);
+
     }
 
     [HttpGet("{id:int}")]
@@ -44,10 +34,7 @@ public class EncountersController : ControllerBase
 
         if (encounter is null)
         {
-            return NotFound(new
-            {
-                message = $"Encounter {id} was not found."
-            });
+            return NotFound(new { message = $"Encounter {id} was not found." });
         }
 
         return Ok(encounter);
@@ -56,59 +43,35 @@ public class EncountersController : ControllerBase
     [HttpGet("patient/{patientId:int}")]
     public async Task<IActionResult> GetByPatientId(int patientId)
     {
-        var encounters =
-            await _encounterService.GetByPatientIdAsync(patientId);
 
+        var encounters = await _encounterService.GetByPatientIdAsync(patientId);
         return Ok(encounters);
+
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(
-        int id,
-        UpdateEncounterRequest request)
+    public async Task<IActionResult> Update(int id, UpdateEncounterRequest request)
     {
-        try
-        {
-            var encounter =
-                await _encounterService.UpdateAsync(id, request);
+        var encounter = await _encounterService.UpdateAsync(id, request);
 
-            if (encounter is null)
-            {
-                return NotFound(new
-                {
-                    message = $"Encounter {id} was not found."
-                });
-            }
-
-            return Ok(encounter);
-        }
-        catch (InvalidOperationException ex)
+        if (encounter is null)
         {
-            return Conflict(new { message = ex.Message });
+            return NotFound(new { message = $"Encounter {id} was not found." });
         }
+
+        return Ok(encounter);
     }
 
     [HttpPatch("{id:int}/complete")]
     public async Task<IActionResult> Complete(int id)
     {
-        try
-        {
-            var encounter =
-                await _encounterService.CompleteAsync(id);
+        var encounter = await _encounterService.CompleteAsync(id);
 
-            if (encounter is null)
-            {
-                return NotFound(new
-                {
-                    message = $"Encounter {id} was not found."
-                });
-            }
-
-            return Ok(encounter);
-        }
-        catch (InvalidOperationException ex)
+        if (encounter is null)
         {
-            return Conflict(new { message = ex.Message });
+            return NotFound(new { message = $"Encounter {id} was not found." });
         }
+
+        return Ok(encounter);
     }
 }

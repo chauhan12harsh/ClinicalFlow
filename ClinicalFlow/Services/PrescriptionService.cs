@@ -16,28 +16,26 @@ public class PrescriptionService : IPrescriptionService
         _context = context;
     }
 
-    public async Task<PrescriptionResponse?> CreateAsync(
-        int encounterId,
-        CreatePrescriptionRequest request)
+    public async Task<PrescriptionResponse?> CreateAsync(int encounterId, CreatePrescriptionRequest request)
     {
         if (request.Medications is null || request.Medications.Count == 0)
         {
-            throw new ArgumentException(
-                "At least one medication is required.");
+            throw new ArgumentException("At least one medication is required.");
         }
 
         // Check the parent record before starting the write transaction.
         var encounter = await _context.Encounters
-            .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.EncounterId == encounterId);
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync(e => e.EncounterId == encounterId);
 
         if (encounter is null)
+        {
             return null;
+        }
 
         if (encounter.Status != EncounterStatus.InProgress)
         {
-            throw new InvalidOperationException(
-                "Prescriptions can only be added to in-progress encounters.");
+            throw new InvalidOperationException("Prescriptions can only be added to in-progress encounters.");
         }
 
         // Validate values that may also be supplied outside model validation.
@@ -47,19 +45,16 @@ public class PrescriptionService : IPrescriptionService
                 string.IsNullOrWhiteSpace(medication.Dosage) ||
                 string.IsNullOrWhiteSpace(medication.Frequency))
             {
-                throw new ArgumentException(
-                    "Medication name, dosage, and frequency are required.");
+                throw new ArgumentException("Medication name, dosage, and frequency are required.");
             }
 
             if (medication.DurationDays <= 0 || medication.Quantity <= 0)
             {
-                throw new ArgumentException(
-                    "Medication duration and quantity must be greater than zero.");
+                throw new ArgumentException("Medication duration and quantity must be greater than zero.");
             }
         }
 
-        await using var transaction =
-            await _context.Database.BeginTransactionAsync();
+        await using var transaction = await _context.Database.BeginTransactionAsync();
 
         try
         {
@@ -67,23 +62,21 @@ public class PrescriptionService : IPrescriptionService
             {
                 EncounterId = encounterId,
                 CreatedAt = DateTime.UtcNow,
-                Medications = request.Medications.Select(m =>
-                    new PrescriptionMedication
+                Medications = request.Medications.Select(m => new PrescriptionMedication
                     {
                         MedicationName = m.MedicationName.Trim(),
                         Dosage = m.Dosage.Trim(),
                         Frequency = m.Frequency.Trim(),
                         DurationDays = m.DurationDays,
                         Quantity = m.Quantity,
-                        Instructions = string.IsNullOrWhiteSpace(m.Instructions)
-                            ? null
-                            : m.Instructions.Trim()
-                    }).ToList()
+                        Instructions = string.IsNullOrWhiteSpace(m.Instructions) ? null : m.Instructions.Trim()
+                    }
+                ).ToList()
             };
 
             _context.Prescriptions.Add(prescription);
-
             await _context.SaveChangesAsync();
+
             await transaction.CommitAsync();
 
             return new PrescriptionResponse
@@ -91,18 +84,17 @@ public class PrescriptionService : IPrescriptionService
                 PrescriptionId = prescription.PrescriptionId,
                 EncounterId = prescription.EncounterId,
                 CreatedAt = prescription.CreatedAt,
-                Medications = prescription.Medications.Select(m =>
-                    new PrescriptionMedicationResponse
+                Medications = prescription.Medications.Select(m => new PrescriptionMedicationResponse
                     {
-                        PrescriptionMedicationId =
-                            m.PrescriptionMedicationId,
+                        PrescriptionMedicationId = m.PrescriptionMedicationId,
                         MedicationName = m.MedicationName,
                         Dosage = m.Dosage,
                         Frequency = m.Frequency,
                         DurationDays = m.DurationDays,
                         Quantity = m.Quantity,
                         Instructions = m.Instructions
-                    }).ToList()
+                    }
+                ).ToList()
             };
         }
         catch
@@ -112,14 +104,15 @@ public class PrescriptionService : IPrescriptionService
         }
     }
 
-    public async Task<List<PrescriptionResponse>?> GetByEncounterIdAsync(
-    int encounterId)
+    public async Task<List<PrescriptionResponse>?> GetByEncounterIdAsync(int encounterId)
     {
         var encounterExists = await _context.Encounters
-            .AnyAsync(e => e.EncounterId == encounterId);
+                                   .AnyAsync(e => e.EncounterId == encounterId);
 
         if (!encounterExists)
+        {
             return null;
+        }
 
         return await _context.Prescriptions
             .AsNoTracking()
@@ -134,17 +127,14 @@ public class PrescriptionService : IPrescriptionService
                 Medications = p.Medications
                     .Select(m => new PrescriptionMedicationResponse
                     {
-                        PrescriptionMedicationId =
-                            m.PrescriptionMedicationId,
+                        PrescriptionMedicationId = m.PrescriptionMedicationId,
                         MedicationName = m.MedicationName,
                         Dosage = m.Dosage,
                         Frequency = m.Frequency,
                         DurationDays = m.DurationDays,
                         Quantity = m.Quantity,
                         Instructions = m.Instructions
-                    })
-                    .ToList()
-            })
-            .ToListAsync();
+                    }).ToList()
+            }).ToListAsync();
     }
 }

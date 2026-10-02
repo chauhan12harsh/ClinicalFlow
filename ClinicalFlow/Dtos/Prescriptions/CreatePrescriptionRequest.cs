@@ -12,7 +12,7 @@ public class CreatePrescriptionRequest
 public class CreatePrescriptionMedicationRequest
 {
     [Required]
-    [MaxLength(200)]
+    [MaxLength(150)]
     public string MedicationName { get; set; } = string.Empty;
 
     [Required]
@@ -29,6 +29,6 @@ public class CreatePrescriptionMedicationRequest
     [Range(1, 100000)]
     public int Quantity { get; set; }
 
-    [MaxLength(1000)]
+    [MaxLength(500)]
     public string? Instructions { get; set; }
 }

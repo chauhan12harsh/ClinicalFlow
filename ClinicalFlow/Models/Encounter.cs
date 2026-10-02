@@ -34,7 +34,5 @@ namespace ClinicalFlow.Models
 
         public ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
 
-
-
     }
 }

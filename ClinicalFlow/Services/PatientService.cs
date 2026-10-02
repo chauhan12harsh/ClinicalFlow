@@ -16,19 +16,15 @@ public class PatientService : IPatientService
         _context = context;
     }
 
-    public async Task<PatientResponse> CreateAsync(
-        CreatePatientRequest request)
+    public async Task<PatientResponse> CreateAsync(CreatePatientRequest request)
     {
-        string medicalRecordNumber =
-            request.MedicalRecordNumber.Trim();
+        string medicalRecordNumber = request.MedicalRecordNumber.Trim();
 
-        bool exists = await _context.Patients.AnyAsync(
-            p => p.MedicalRecordNumber == medicalRecordNumber);
+        bool exists = await _context.Patients.AnyAsync(p => p.MedicalRecordNumber == medicalRecordNumber);
 
         if (exists)
         {
-            throw new InvalidOperationException(
-                "A patient with this medical record number already exists.");
+            throw new InvalidOperationException("A patient with this medical record number already exists.");
         }
 
         var patient = new Patient
@@ -79,9 +75,7 @@ public class PatientService : IPatientService
         return patient is null ? null : MapToResponse(patient);
     }
 
-    public async Task<PatientResponse?> UpdateAsync(
-        int id,
-        UpdatePatientRequest request)
+    public async Task<PatientResponse?> UpdateAsync(int id, UpdatePatientRequest request)
     {
         var patient = await _context.Patients
             .FirstOrDefaultAsync(p => p.PatientId == id);

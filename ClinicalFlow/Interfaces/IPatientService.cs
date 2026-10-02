@@ -11,7 +11,5 @@ public interface IPatientService
 
     Task<PatientResponse?> GetByIdAsync(int id);
 
-    Task<PatientResponse?> UpdateAsync(
-        int id,
-        UpdatePatientRequest request);
+    Task<PatientResponse?> UpdateAsync(int id, UpdatePatientRequest request);
 }

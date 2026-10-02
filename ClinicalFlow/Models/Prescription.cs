@@ -2,7 +2,6 @@
 {
     public class Prescription
     {
-
         public int PrescriptionId{  get; set; }
 
         public int EncounterId { get; set; }
@@ -11,7 +10,6 @@
 
         public Encounter Encounter { get; set; } = null!;
 
-        public ICollection<PrescriptionMedication> Medications { get; set; }
-            = new List<PrescriptionMedication>();
+        public ICollection<PrescriptionMedication> Medications { get; set; } = new List<PrescriptionMedication>();
     }
 }

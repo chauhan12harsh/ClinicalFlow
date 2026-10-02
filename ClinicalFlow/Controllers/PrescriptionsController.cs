@@ -18,42 +18,28 @@ public class PrescriptionsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(
-        int encounterId,
-        [FromBody] CreatePrescriptionRequest request)
+    public async Task<IActionResult> Create(int encounterId, [FromBody] CreatePrescriptionRequest request)
     {
-        try
-        {
-            var result = await _prescriptionService.CreateAsync(
-                encounterId, request);
 
-            if (result is null)
-                return NotFound(new { message = "Encounter not found." });
+        var result = await _prescriptionService.CreateAsync(encounterId, request);
 
-            return StatusCode(StatusCodes.Status201Created, result);
-        }
-        catch (InvalidOperationException ex)
+        if (result is null)
         {
-            return Conflict(new { message = ex.Message });
+            return NotFound(new { message = "Encounter not found." });
         }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
+
+        return StatusCode(StatusCodes.Status201Created, result);
+
     }
 
     [HttpGet]
     public async Task<IActionResult> GetByEncounterId(int encounterId)
     {
-        var prescriptions =
-            await _prescriptionService.GetByEncounterIdAsync(encounterId);
+        var prescriptions = await _prescriptionService.GetByEncounterIdAsync(encounterId);
 
         if (prescriptions is null)
         {
-            return NotFound(new
-            {
-                message = "Encounter not found."
-            });
+            return NotFound(new { message = "Encounter not found." });
         }
 
         return Ok(prescriptions);

@@ -55,47 +55,36 @@ namespace ClinicalFlow.Services
 
             if (string.IsNullOrWhiteSpace(secretKey))
             {
-                throw new InvalidOperationException(
-                    "JWT signing key is not configured.");
+                throw new InvalidOperationException("JWT signing key is not configured.");
             }
 
-            var expiresAt = DateTime.UtcNow.AddMinutes(
-                _jwtSettings.ExpirationMinutes);
+            var expiresAt = DateTime.UtcNow.AddMinutes( _jwtSettings.ExpirationMinutes);
 
             var claims = new List<Claim>
-        {
-            new(JwtRegisteredClaimNames.Sub,
-                user.ApplicationUserId.ToString()),
+            {
+                new(JwtRegisteredClaimNames.Sub, user.ApplicationUserId.ToString()),
+                new(JwtRegisteredClaimNames.Email, user.Email),
+                new(ClaimTypes.Name, user.FullName),
+                new(ClaimTypes.Role, user.Role),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
 
-            new(JwtRegisteredClaimNames.Email, user.Email),
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
-            new(ClaimTypes.Name, user.FullName),
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            new(ClaimTypes.Role, user.Role),
-
-            new(JwtRegisteredClaimNames.Jti,
-                Guid.NewGuid().ToString())
-        };
-
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(secretKey));
-
-            var credentials = new SigningCredentials(
-                key,
-                SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
+            var token = new JwtSecurityToken
+            (
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
                 expires: expiresAt,
-                signingCredentials: credentials);
+                signingCredentials: credentials
+            );
 
             return new LoginResponse
             {
-                AccessToken = new JwtSecurityTokenHandler()
-                    .WriteToken(token),
-
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
                 TokenType = "Bearer",
                 ExpiresAtUtc = expiresAt
             };
