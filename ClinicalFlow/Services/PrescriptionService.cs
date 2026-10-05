@@ -54,6 +54,18 @@ public class PrescriptionService : IPrescriptionService
             }
         }
 
+        // This prevents of including same medications in prescription.
+        var duplicateMedications = request.Medications
+            .GroupBy(x => x.MedicationName.Trim(), StringComparer.OrdinalIgnoreCase)
+            .Where(g => g.Count() > 1)
+            .Select(g => g.Key)
+            .ToList();
+
+        if (duplicateMedications.Count > 0)
+        {
+            throw new ArgumentException($"Duplicate medications are not allowed: {string.Join(", ", duplicateMedications)}");
+        }
+
         await using var transaction = await _context.Database.BeginTransactionAsync();
 
         try
