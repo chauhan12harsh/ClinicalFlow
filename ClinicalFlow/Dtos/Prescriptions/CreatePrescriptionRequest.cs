@@ -6,21 +6,22 @@ public class CreatePrescriptionRequest
 {
     [Required]
     [MinLength(1, ErrorMessage = "At least one medication is required.")]
+    [MaxLength(50, ErrorMessage = "A prescription cannot contain more than 50 medications.")]
     public List<CreatePrescriptionMedicationRequest> Medications { get; set; } = [];
 }
 
 public class CreatePrescriptionMedicationRequest
 {
     [Required]
-    [MaxLength(150)]
+    [StringLength(150, MinimumLength = 1)]
     public string MedicationName { get; set; } = string.Empty;
 
     [Required]
-    [MaxLength(100)]
+    [StringLength(100, MinimumLength = 1)]
     public string Dosage { get; set; } = string.Empty;
 
     [Required]
-    [MaxLength(100)]
+    [StringLength(100, MinimumLength = 1)]
     public string Frequency { get; set; } = string.Empty;
 
     [Range(1, 3650)]
@@ -29,6 +30,6 @@ public class CreatePrescriptionMedicationRequest
     [Range(1, 100000)]
     public int Quantity { get; set; }
 
-    [MaxLength(500)]
+    [StringLength(500)]
     public string? Instructions { get; set; }
 }

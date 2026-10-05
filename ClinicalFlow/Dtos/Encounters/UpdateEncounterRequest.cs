@@ -12,5 +12,6 @@ public class UpdateEncounterRequest
     [StringLength(1000)]
     public string? Diagnosis { get; set; }
 
+    [StringLength(5000)]
     public string? ClinicalNotes { get; set; }
 }

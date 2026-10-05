@@ -17,6 +17,7 @@ public class CreatePatientRequest
     [StringLength(100, MinimumLength = 1)]
     public string LastName { get; set; } = string.Empty;
 
+    [DateOfBirthValidation]
     public DateOnly? DateOfBirth { get; set; }
 
     [StringLength(20)]
