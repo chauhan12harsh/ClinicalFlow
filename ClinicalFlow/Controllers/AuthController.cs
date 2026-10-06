@@ -22,7 +22,7 @@ public class AuthController : ControllerBase
 
         if (result is null)
         {
-            return Unauthorized(new { message = "Invalid email or password." });
+            return Unauthorized(new { message = "Invalid username or password."});
         }
 
         return Ok(result);

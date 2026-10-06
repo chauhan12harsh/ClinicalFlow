@@ -61,7 +61,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \r\n}",
+              "raw": "{\r\n  \"firstName\": \"Ananya\",\r\n  \"lastName\": \"Patel\",\r\n  \"dateOfBirth\": \"1988-11-24\",\r\n  \"gender\": \"Female\",\r\n  \"medicalRecordNumber\": \"MRN-10002\",\r\n  \"phoneNumber\": \"9123456780\",\r\n  \"address\": \"45 Green Avenue, Raipur, Chhattisgarh\",\r\n  \"email\":\"ananya@clinicalflow.com\",\r\n  \"password\":\"ananya@123\"\r\n}\r\n\r\n// {\r\n//   \"medicalRecordNumber\": \"MRN-2026-0001\",\r\n//   \"firstName\": \"Aarav\",\r\n//   \"lastName\": \"Sharma\",\r\n//   \"dateOfBirth\": \"1995-06-15\",\r\n//   \"gender\": \"Male\",\r\n//   \"phoneNumber\": \"9876543210\",\r\n//   \"email\": \"aarav.sharma@example.com\",\r\n//   \"password\": \"Patient@12345\"\r\n// }\r\n\r\n// {\r\n//   \"medicalRecordNumber\": \"MRN-2026-0002\",\r\n//   \"firstName\": \"Priya\",\r\n//   \"lastName\": \"Patel\",\r\n//   \"dateOfBirth\": \"1988-03-22\",\r\n//   \"gender\": \"Female\",\r\n//   \"phoneNumber\": \"9823456710\",\r\n//   \"email\": \"priya.patel@example.com\",\r\n//   \"password\": \"Patient@12345\"\r\n// }\r\n\r\n// {\r\n//   \"medicalRecordNumber\": \"MRN-2026-0005\",\r\n//   \"firstName\": \"Vikram\",\r\n//   \"lastName\": \"Singh\",\r\n//   \"dateOfBirth\": \"1975-03-30\",\r\n//   \"gender\": \"Male\",\r\n//   \"phoneNumber\": \"9812345678\",\r\n//   \"email\": \"vikram.singh@example.com\",\r\n//   \"password\": \"Patient@12345\"\r\n// }",
               "options": {
                 "raw": {
                   "language": "json"
@@ -69,9 +69,9 @@
               }
             },
             "url": {
-              "raw": "{{base_url}/api/patients",
+              "raw": "{{base_url}}/api/patients",
               "host": [
-                "{{base_url}"
+                "{{base_url}}"
               ],
               "path": [
                 "api",
@@ -97,14 +97,14 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/patients/1",
+              "raw": "{{base_url}}/api/patients/9",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "patients",
-                "1"
+                "9"
               ]
             }
           },
@@ -131,7 +131,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n\r\n    \r\n}",
+              "raw": "//   {        \r\n//         \"firstName\": \"Ananya\",\r\n//         \"lastName\": \"Shukla\",\r\n//         \"dateOfBirth\": \"1988-11-24\",\r\n//         \"gender\": \"Female\",\r\n//         \"phoneNumber\": \"9123456780\",\r\n//         \"email\": \"ananya@clinicalflow.com\"      \r\n//     }\r\n{\r\n    \"firstName\": \"Priya\",\r\n    \"lastName\": \"patnayak\",\r\n    \"dateOfBirth\": \"1988-03-22\",\r\n    \"gender\": \"Female\",\r\n    \"phoneNumber\": \"9823456710\",\r\n    \"email\": \"priya.patnayak@example.com\"      \r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -139,14 +139,14 @@
               }
             },
             "url": {
-              "raw": "{{base_url}}/api/patients/{patientId}",
+              "raw": "{{base_url}}/api/patients/8",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "patients",
-                "{patientId}"
+                "8"
               ]
             }
           },
@@ -180,7 +180,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"doctor@gmail.com\",\r\n  \"password\": \"doctor@123\"\r\n\r\n    // \"email\": \"admin@gmail.com\",\r\n    // \"password\": \"admin@123\"\r\n}",
+              "raw": "{\r\n//   \"email\": \"doctor@gmail.com\",\r\n//   \"password\": \"doctor@123\"\r\n\r\n    \"email\": \"arjun.mehta@clinicalflow.com\",\r\n    \"password\": \"Doctor@12345\"\r\n\r\n    // \"email\": \"admin@gmail.com\",\r\n    // \"password\": \"admin@123\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -227,7 +227,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \r\n}",
+              "raw": "// {\r\n//   \"patientId\": 3,\r\n//   \"doctorId\": 1,\r\n//   \"chiefComplaint\": \"Fever and body ache for the past three days\",\r\n//   \"clinicalNotes\": \"Patient reports intermittent fever, generalized weakness, and body ache. No history of vomiting or diarrhea.\",\r\n//   \"diagnosis\": \"Viral fever\"\r\n// }\r\n// {\r\n//   \"patientId\": 7,\r\n//   \"doctorId\": 1,\r\n//   \"chiefComplaint\": \"Persistent cough and shortness of breath\",\r\n//   \"clinicalNotes\": \"Patient reports dry cough for one week with mild shortness of breath, especially during physical activity. No chest pain reported.\",\r\n//   \"diagnosis\": \"Acute bronchitis\"\r\n// }\r\n{\r\n  \"patientId\": 9,\r\n  \"doctorId\": 1,\r\n  \"chiefComplaint\": \"Follow-up for chest discomfort\",\r\n  \"clinicalNotes\": \"Patient reports occasional chest discomfort during physical activity. Symptoms improve with rest. No dizziness or loss of consciousness reported.\",\r\n  \"diagnosis\": \"Stable angina\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -307,7 +307,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/encounters/patient/1",
+              "raw": "{{base_url}}/api/encounters/patient/9",
               "host": [
                 "{{base_url}}"
               ],
@@ -315,7 +315,7 @@
                 "api",
                 "encounters",
                 "patient",
-                "1"
+                "9"
               ]
             }
           },
@@ -340,15 +340,24 @@
                 "disabled": true
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"chiefComplaint\": \"Persistent headache and dizziness for the past five days\",\r\n  \"diagnosis\": \"Possible migraine with associated vertigo\",\r\n  \"clinicalNotes\": \"Patient reports worsening headache, dizziness, and sensitivity to light. Advised rest and hydration.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": "{{base_url}}/api/encounters/{encounterId}",
+              "raw": "{{base_url}}/api/encounters/3",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "encounters",
-                "{encounterId}"
+                "3"
               ]
             }
           },
@@ -374,14 +383,14 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/encounters/{encounterId}/complete",
+              "raw": "{{base_url}}/api/encounters/2/complete",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "encounters",
-                "{encounterId}",
+                "2",
                 "complete"
               ]
             }
@@ -409,14 +418,14 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/encounters/{encounterId}/prescriptions",
+              "raw": "{{base_url}}/api/encounters/3/prescriptions",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "encounters",
-                "{encounterId}",
+                "3",
                 "prescriptions"
               ]
             }
@@ -444,7 +453,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \r\n}",
+              "raw": "\r\n  {\r\n  \"medications\": [\r\n    {\r\n      \"medicationName\": \"Metformin\",\r\n      \"dosage\": \"500 mg\",\r\n      \"frequency\": \"Twice daily with meals\",\r\n      \"quantity\": 30,\r\n      \"durationDays\": 15\r\n    },\r\n    {\r\n      \"medicationName\": \"Pantoprazole\",\r\n      \"dosage\": \"40 mg\",\r\n      \"frequency\": \"Once daily before breakfast\",\r\n      \"quantity\": 15,\r\n      \"durationDays\": 15\r\n    }\r\n  ]\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -452,15 +461,91 @@
               }
             },
             "url": {
-              "raw": "{{base_url}}/api/encounters/{encounterId}/prescriptions",
+              "raw": "{{base_url}}/api/encounters/1/prescriptions",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "encounters",
-                "{encounterId}",
+                "1",
                 "prescriptions"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "CreateDoctor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "// {\r\n//   \"fullName\": \"Dr. Arjun Mehta\",\r\n//   \"email\": \"arjun.mehta@clinicalflow.com\",\r\n//   \"phoneNumber\": \"9876543210\",\r\n//   \"speciality\": \"Cardiology\",\r\n//   \"password\": \"Doctor@12345\"\r\n// }\r\n\r\n{\r\n  \"fullName\": \"Dr. Neha Kapoor\",\r\n  \"email\": \"neha.kapoor@clinicalflow.com\",\r\n  \"phoneNumber\": \"9812345676\",\r\n  \"speciality\": \"Neurology\",\r\n  \"password\": \"Doctor@12345\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/createdoctor",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "createdoctor"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetAllDoctors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{doctor_token}}",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/doctors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "doctors"
               ]
             }
           },

@@ -16,7 +16,7 @@ public class EncounterService : IEncounterService
         _context = context;
     }
 
-    public async Task<EncounterResponse> CreateAsync( CreateEncounterRequest request)
+    public async Task<EncounterResponse> CreateAsync(CreateEncounterRequest request)
     {
         bool patientExists = await _context.Patients
             .AnyAsync(p => p.PatientId == request.PatientId);
@@ -99,7 +99,7 @@ public class EncounterService : IEncounterService
             .ToListAsync();
     }
 
-    public async Task<EncounterResponse?> UpdateAsync( int id, UpdateEncounterRequest request)
+    public async Task<EncounterResponse?> UpdateAsync(int id, UpdateEncounterRequest request)
     {
         var encounter = await _context.Encounters
             .FirstOrDefaultAsync(e => e.EncounterId == id);

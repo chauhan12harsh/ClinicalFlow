@@ -36,7 +36,6 @@ public class AdminService : IAdminService
 
         var applicationUser = new ApplicationUser
         {
-            FullName = request.FullName.Trim(),
             Email = email,
             Role = UserRole.Doctor,
             CreatedAt = DateTime.UtcNow
@@ -52,6 +51,7 @@ public class AdminService : IAdminService
             ApplicationUserId = applicationUser.ApplicationUserId,
             FullName = request.FullName.Trim(),
             Email = email,
+            PhoneNumber = request.PhoneNumber,
             Speciality = string.IsNullOrWhiteSpace(request.Speciality) ? null : request.Speciality.Trim(),
             CreatedAt = DateTime.UtcNow
         };
@@ -67,6 +67,7 @@ public class AdminService : IAdminService
             ApplicationUserId = doctor.ApplicationUserId,
             FullName = doctor.FullName,
             Email = doctor.Email,
+            PhoneNumber = doctor.PhoneNumber,
             Speciality = doctor.Speciality,
             CreatedAt = doctor.CreatedAt
         };
@@ -83,6 +84,7 @@ public class AdminService : IAdminService
                 ApplicationUserId = d.ApplicationUserId,
                 FullName = d.FullName,
                 Email = d.Email,
+                PhoneNumber = d.PhoneNumber,
                 Speciality = d.Speciality,
                 CreatedAt = d.CreatedAt
             })

@@ -2,9 +2,9 @@
 {
     public class PrescriptionMedication
     {
-        public Guid PrescriptionMedicationId { get; set; } = Guid.NewGuid();
+        public int PrescriptionMedicationId { get; set; } 
 
-        public Guid PrescriptionId { get; set; }
+        public int PrescriptionId { get; set; }
 
         public string MedicationName { get; set; } = string.Empty;
 
@@ -17,6 +17,7 @@
         public int Quantity { get; set; }
 
         public string? Instructions { get; set; }
+
 
         // Navigation Property
         public Prescription Prescription { get; set; } = null!;

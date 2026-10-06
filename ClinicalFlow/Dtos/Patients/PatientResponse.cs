@@ -3,7 +3,7 @@ namespace ClinicalFlow.DTOs.Patients;
 
 public class PatientResponse
 {
-    public Guid PatientId { get; set; }
+    public int PatientId { get; set; }
 
     public string MedicalRecordNumber { get; set; } = string.Empty;
 

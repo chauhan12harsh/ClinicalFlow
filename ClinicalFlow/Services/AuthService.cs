@@ -63,8 +63,7 @@ namespace ClinicalFlow.Services
             var claims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Sub, user.ApplicationUserId.ToString()),
-                new(JwtRegisteredClaimNames.Email, user.Email),
-                new(ClaimTypes.Name, user.FullName),
+                new(JwtRegisteredClaimNames.Email, user.Email),                
                 new(ClaimTypes.Role, user.Role.ToString()),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };

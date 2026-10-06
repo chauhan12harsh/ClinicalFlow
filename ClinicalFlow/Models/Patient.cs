@@ -2,9 +2,9 @@
 {
     public class Patient
     {
-        public Guid PatientId { set; get; } = Guid.NewGuid();
+        public int PatientId { set; get; }
 
-        public Guid ApplicationUserId { get; set; }
+        public int ApplicationUserId { get; set; }
 
         public string MedicalRecordNumber { set; get; } = string.Empty;
 
@@ -20,8 +20,7 @@
 
         public string? Email { set; get; }
 
-
-        public DateTime CreatedAt = DateTime.UtcNow;
+        public DateTime CreatedAt { set; get; } = DateTime.UtcNow;
 
         public ApplicationUser ApplicationUser { get; set; } = null!;
 

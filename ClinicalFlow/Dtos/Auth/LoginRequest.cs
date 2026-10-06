@@ -4,8 +4,10 @@ namespace ClinicalFlow.Dtos.Auth
 {
     public class LoginRequest
     {
-        [Required]        
-        public string Username { get; set; } = string.Empty;
+        [Required]
+        [EmailAddress]
+        [StringLength(200)]
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [StringLength(200)]

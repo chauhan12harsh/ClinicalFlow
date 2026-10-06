@@ -28,9 +28,10 @@ public class CreatePatientRequest
     [StringLength(20)]
     public string? PhoneNumber { get; set; }
 
+    [Required]
     [EmailAddress]
     [StringLength(200)]
-    public string? Email { get; set; }
+    public string? Email { get; set; } = string.Empty;
 
     [Required]
     [StringLength(200, MinimumLength = 8)]

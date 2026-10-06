@@ -1,23 +1,20 @@
 ﻿using ClinicalFlow.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace ClinicalFlow.Models
 {
     public class Encounter
     {
-        public Guid EncounterId { get; set; } = Guid.NewGuid();
+        public int EncounterId { get; set; }
 
-        // Foreign key to Patient
-        public Guid PatientId {  get; set; }
+        public int PatientId { get; set; }
 
-        // Foreign key to Doctor
-        public Guid DoctorId {  get; set; }
+        public int DoctorId { get; set; }
 
-        public string ChiefComplaint {  get; set; } = string.Empty;
+        public string ChiefComplaint { get; set; } = string.Empty;
 
         public string? Diagnosis { get; set; } = string.Empty;
 
-        public string? ClinicalNotes {  get; set; } = string.Empty;
+        public string? ClinicalNotes { get; set; } = string.Empty;
 
         public EncounterStatus Status { get; set; } = EncounterStatus.InProgress;
 
@@ -25,12 +22,12 @@ namespace ClinicalFlow.Models
 
         public DateTime? CompletedAt { get; set; }
 
+        public ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
+
         // Navigation properties
         public Patient Patient { get; set; } = null!;
 
         public Doctor Doctor { get; set; } = null!;
-
-        public ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
 
     }
 }

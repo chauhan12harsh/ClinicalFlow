@@ -2,11 +2,9 @@
 {
     public class DoctorResponse
     {
-        public Guid DoctorId { get; set; }
+        public int DoctorId { get; set; }
 
-        public Guid ApplicationUserId { get; set; }
-
-        public string Username { get; set; } = string.Empty;
+        public int ApplicationUserId { get; set; }
 
         public string FullName { get; set; } = string.Empty;
 

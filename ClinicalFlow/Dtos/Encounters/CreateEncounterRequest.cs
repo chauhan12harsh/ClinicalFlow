@@ -5,9 +5,9 @@ namespace ClinicalFlow.DTOs.Encounters;
 
 public class CreateEncounterRequest
 {   
-    public Guid PatientId { get; set; }
+    public int PatientId { get; set; }
 
-    public Guid DoctorId { get; set; }
+    public int DoctorId { get; set; }
 
     [Required]
     [StringLength(500, MinimumLength = 1)]

@@ -2,15 +2,15 @@
 {
     public class Doctor
     {
-        public Guid DoctorId { get; set; } = Guid.NewGuid();
+        public int DoctorId { get; set; }
 
-        public Guid ApplicationUserId { get; set; }
+        public int ApplicationUserId { get; set; }
 
         public string FullName { get; set; } = string.Empty;
 
-        public string? Email { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
 
-        public string? PhoneNumber { set; get; }
+        public string PhoneNumber { set; get; } = string.Empty;
 
         public string? Speciality { get; set; } = string.Empty;
 

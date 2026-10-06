@@ -2,9 +2,9 @@
 {
     public class Prescription
     {
-        public Guid PrescriptionId{  get; set; }  = Guid.NewGuid();
+        public int PrescriptionId {  get; set; }
 
-        public Guid EncounterId { get; set; }
+        public int EncounterId { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

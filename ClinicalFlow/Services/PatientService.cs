@@ -1,8 +1,10 @@
 ﻿
 using ClinicalFlow.Data;
-using ClinicalFlow.Models;
 using ClinicalFlow.DTOs.Patients;
+using ClinicalFlow.Enums;
 using ClinicalFlow.Interfaces;
+using ClinicalFlow.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClinicalFlow.Services;
@@ -10,40 +12,81 @@ namespace ClinicalFlow.Services;
 public class PatientService : IPatientService
 {
     private readonly ApplicationDbContext _context;
-
-    public PatientService(ApplicationDbContext context)
+    private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+    public PatientService(ApplicationDbContext context, IPasswordHasher<ApplicationUser> passwordHasher)
     {
         _context = context;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<PatientResponse> CreateAsync(CreatePatientRequest request)
     {
+        string email = request.Email.Trim().ToLowerInvariant();
         string medicalRecordNumber = request.MedicalRecordNumber.Trim();
 
-        bool exists = await _context.Patients.AnyAsync(p => p.MedicalRecordNumber == medicalRecordNumber);
+        bool emailExists = await _context.ApplicationUsers
+            .AnyAsync(u => u.Email == email);
 
-        if (exists)
+        if (emailExists)
         {
-            throw new InvalidOperationException("A patient with this medical record number already exists.");
+            throw new InvalidOperationException(
+                "A user with this email already exists.");
         }
 
-        var patient = new Patient
+        bool medicalRecordNumberExists = await _context.Patients
+            .AnyAsync(p => p.MedicalRecordNumber == medicalRecordNumber);
+
+        if (medicalRecordNumberExists)
         {
-            MedicalRecordNumber = medicalRecordNumber,
-            FirstName = request.FirstName.Trim(),
-            LastName = request.LastName.Trim(),
-            DateOfBirth = request.DateOfBirth,
-            Gender = request.Gender?.Trim(),
-            PhoneNumber = request.PhoneNumber?.Trim(),
-            Email = request.Email?.Trim(),
-            CreatedAt = DateTime.UtcNow
-        };
+            throw new InvalidOperationException(
+                "A patient with this medical record number already exists.");
+        }
 
-        _context.Patients.Add(patient);
-zz
-        await _context.SaveChangesAsync();
+        await using var transaction =
+            await _context.Database.BeginTransactionAsync();
 
-        return MapToResponse(patient);
+        try
+        {
+            var applicationUser = new ApplicationUser
+            {
+                Email = email,
+                Role = UserRole.Patient,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            applicationUser.PasswordHash =
+                _passwordHasher.HashPassword(
+                    applicationUser,
+                    request.Password);
+
+            _context.ApplicationUsers.Add(applicationUser);
+
+            var patient = new Patient
+            {
+                ApplicationUser = applicationUser,
+                MedicalRecordNumber = medicalRecordNumber,
+                FirstName = request.FirstName.Trim(),
+                LastName = request.LastName.Trim(),
+                DateOfBirth = request.DateOfBirth,
+                Gender = request.Gender?.Trim(),
+                PhoneNumber = request.PhoneNumber?.Trim(),
+                Email = email?.Trim(),
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Patients.Add(patient);
+
+            await _context.SaveChangesAsync();
+
+            await transaction.CommitAsync();
+
+            return MapToResponse(patient);
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 
     public async Task<List<PatientResponse>> GetAllAsync()

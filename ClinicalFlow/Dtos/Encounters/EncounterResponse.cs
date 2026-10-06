@@ -5,13 +5,13 @@ namespace ClinicalFlow.DTOs.Encounters;
 
 public class EncounterResponse
 {
-    public Guid EncounterId { get; set; }
+    public int EncounterId { get; set; }
 
-    public Guid PatientId { get; set; }
+    public int PatientId { get; set; }
 
     public string PatientName { get; set; } = string.Empty;
 
-    public Guid DoctorId { get; set; }
+    public int DoctorId { get; set; }
 
     public string DoctorName { get; set; } = string.Empty;
 

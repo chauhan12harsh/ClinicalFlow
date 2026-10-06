@@ -105,7 +105,6 @@ if (app.Environment.IsDevelopment())
             var user = new ApplicationUser
             {
                 Email = email,
-                FullName = fullName.Trim(),
                 Role = UserRole.Doctor,
                 CreatedAt = DateTime.UtcNow
             };

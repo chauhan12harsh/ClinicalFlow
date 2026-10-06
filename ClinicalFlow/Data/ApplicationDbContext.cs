@@ -29,11 +29,11 @@ namespace ClinicalFlow.Data
             {
                 entity.HasKey(u => u.ApplicationUserId);
 
-                entity.Property(u => u.Username)
-                    .HasMaxLength(20)
-                    .IsRequired();
+                entity.Property(u => u.Email)
+                   .HasMaxLength(200)
+                   .IsRequired();
 
-                entity.HasIndex(u => u.Username)
+                entity.HasIndex(u => u.Email)
                     .IsUnique();
 
                 entity.Property(u => u.PasswordHash)
@@ -51,9 +51,6 @@ namespace ClinicalFlow.Data
             {
                 entity.HasKey(p => p.PatientId);
 
-                entity.HasIndex(d => d.ApplicationUserId)
-                    .IsUnique();
-
                 entity.HasIndex(p => p.MedicalRecordNumber)
                     .IsUnique();
 
@@ -69,6 +66,9 @@ namespace ClinicalFlow.Data
                     .HasMaxLength(100)
                     .IsRequired();
 
+                entity.HasIndex(d => d.ApplicationUserId)
+                    .IsUnique();
+
                 entity.HasOne(d => d.ApplicationUser)
                     .WithOne()
                     .HasForeignKey<Patient>(d => d.ApplicationUserId)
@@ -79,9 +79,6 @@ namespace ClinicalFlow.Data
             modelBuilder.Entity<Doctor>(entity =>
             {
                 entity.HasKey(d => d.DoctorId);
-
-                entity.HasIndex(d => d.ApplicationUserId)
-                    .IsUnique();
 
                 entity.Property(d => d.FullName)
                     .HasMaxLength(150)
@@ -97,6 +94,9 @@ namespace ClinicalFlow.Data
                 entity.Property(d => d.PhoneNumber)
                     .HasMaxLength(20)
                     .IsRequired();
+
+                entity.HasIndex(d => d.ApplicationUserId)
+                    .IsUnique();
 
                 entity.HasOne(d => d.ApplicationUser)
                     .WithOne()
