@@ -23,6 +23,7 @@ public class CreatePatientRequest
     [StringLength(20)]
     public string? Gender { get; set; }
 
+    [Required]
     [Phone]
     [StringLength(20)]
     public string? PhoneNumber { get; set; }
@@ -30,4 +31,8 @@ public class CreatePatientRequest
     [EmailAddress]
     [StringLength(200)]
     public string? Email { get; set; }
+
+    [Required]
+    [StringLength(200, MinimumLength = 8)]
+    public string Password { get; set; } = string.Empty;
 }

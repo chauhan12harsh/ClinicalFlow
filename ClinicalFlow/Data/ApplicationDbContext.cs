@@ -24,10 +24,35 @@ namespace ClinicalFlow.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Application User configuration
+            modelBuilder.Entity<ApplicationUser>(entity =>
+            {
+                entity.HasKey(u => u.ApplicationUserId);
+
+                entity.Property(u => u.Username)
+                    .HasMaxLength(20)
+                    .IsRequired();
+
+                entity.HasIndex(u => u.Username)
+                    .IsUnique();
+
+                entity.Property(u => u.PasswordHash)
+                    .HasMaxLength(500)
+                    .IsRequired();
+
+                entity.Property(u => u.Role)
+                    .HasConversion<string>()
+                    .HasMaxLength(50)
+                    .IsRequired();
+            });
+
             // Patient configuration
             modelBuilder.Entity<Patient>(entity =>
             {
                 entity.HasKey(p => p.PatientId);
+
+                entity.HasIndex(d => d.ApplicationUserId)
+                    .IsUnique();
 
                 entity.HasIndex(p => p.MedicalRecordNumber)
                     .IsUnique();
@@ -43,6 +68,11 @@ namespace ClinicalFlow.Data
                 entity.Property(p => p.LastName)
                     .HasMaxLength(100)
                     .IsRequired();
+
+                entity.HasOne(d => d.ApplicationUser)
+                    .WithOne()
+                    .HasForeignKey<Patient>(d => d.ApplicationUserId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // Doctor configuration
@@ -50,7 +80,7 @@ namespace ClinicalFlow.Data
             {
                 entity.HasKey(d => d.DoctorId);
 
-                entity.HasIndex(d => d.Email)
+                entity.HasIndex(d => d.ApplicationUserId)
                     .IsUnique();
 
                 entity.Property(d => d.FullName)
@@ -60,6 +90,18 @@ namespace ClinicalFlow.Data
                 entity.Property(d => d.Email)
                     .HasMaxLength(200)
                     .IsRequired();
+
+                entity.HasIndex(d => d.Email)
+                    .IsUnique();
+
+                entity.Property(d => d.PhoneNumber)
+                    .HasMaxLength(20)
+                    .IsRequired();
+
+                entity.HasOne(d => d.ApplicationUser)
+                    .WithOne()
+                    .HasForeignKey<Doctor>(d => d.ApplicationUserId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // Encounter configuration
@@ -135,30 +177,6 @@ namespace ClinicalFlow.Data
                 entity.HasIndex(pm => pm.PrescriptionId);
             });
 
-            // Application User configuration
-            modelBuilder.Entity<ApplicationUser>(entity =>
-            {
-                entity.HasKey(u => u.ApplicationUserId);
-
-                entity.Property(u => u.FullName)
-                    .HasMaxLength(150)
-                    .IsRequired();
-
-                entity.Property(u => u.Email)
-                    .HasMaxLength(256)
-                    .IsRequired();
-
-                entity.HasIndex(u => u.Email)
-                    .IsUnique();
-
-                entity.Property(u => u.PasswordHash)
-                    .HasMaxLength(500)
-                    .IsRequired();
-
-                entity.Property(u => u.Role)
-                    .HasMaxLength(50)
-                    .IsRequired();
-            });
         }
     }
 }

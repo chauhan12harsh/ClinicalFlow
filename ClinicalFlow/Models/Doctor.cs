@@ -1,23 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ClinicalFlow.Models
+﻿namespace ClinicalFlow.Models
 {
     public class Doctor
     {
-        public int DoctorId { get; set; }
+        public Guid DoctorId { get; set; } = Guid.NewGuid();
 
-        [Required]
-        [MaxLength(150)]
+        public Guid ApplicationUserId { get; set; }
+
         public string FullName { get; set; } = string.Empty;
 
-        [Required]
-        [MaxLength(200)]
-        public string Email { get; set; } = string.Empty;
+        public string? Email { get; set; } = string.Empty;
 
-        [MaxLength(100)]
+        public string? PhoneNumber { set; get; }
+
         public string? Speciality { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public ApplicationUser ApplicationUser { get; set; } = null!;
 
         public ICollection<Encounter> Encounters { get; set; } = new List<Encounter>();
 

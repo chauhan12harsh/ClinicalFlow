@@ -1,5 +1,4 @@
-﻿
-using ClinicalFlow.DTOs.Patients;
+﻿using ClinicalFlow.DTOs.Patients;
 using ClinicalFlow.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClinicalFlow.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/patients")]
 [Authorize]
 public class PatientsController : ControllerBase
 {
@@ -19,6 +18,7 @@ public class PatientsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Doctor")]
     public async Task<IActionResult> Create(CreatePatientRequest request)
     {
 
@@ -28,6 +28,7 @@ public class PatientsController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles ="Doctor,Nurse")]
     public async Task<IActionResult> GetAll()
     {
         var patients = await _patientService.GetAllAsync();
@@ -35,6 +36,7 @@ public class PatientsController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [Authorize(Roles = "Doctor,Nurse")]
     public async Task<IActionResult> GetById(int id)
     {
         var patient = await _patientService.GetByIdAsync(id);
@@ -48,6 +50,7 @@ public class PatientsController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [Authorize(Roles = "Doctor,Nurse")]
     public async Task<IActionResult> Update(
         int id,
         UpdatePatientRequest request)

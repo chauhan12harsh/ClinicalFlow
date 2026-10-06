@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ClinicalFlow.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/encounters")]
 [Authorize]
 public class EncountersController : ControllerBase
 {
@@ -19,6 +19,7 @@ public class EncountersController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Doctor")]
     public async Task<IActionResult> Create(CreateEncounterRequest request)
     {
 
@@ -28,6 +29,7 @@ public class EncountersController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [Authorize(Roles = "Doctor,Nurse")]
     public async Task<IActionResult> GetById(int id)
     {
         var encounter = await _encounterService.GetByIdAsync(id);
@@ -41,6 +43,7 @@ public class EncountersController : ControllerBase
     }
 
     [HttpGet("patient/{patientId:int}")]
+    [Authorize(Roles = "Doctor,Nurse")]
     public async Task<IActionResult> GetByPatientId(int patientId)
     {
 
@@ -50,6 +53,7 @@ public class EncountersController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [Authorize(Roles = "Doctor")]
     public async Task<IActionResult> Update(int id, UpdateEncounterRequest request)
     {
         var encounter = await _encounterService.UpdateAsync(id, request);
@@ -63,6 +67,7 @@ public class EncountersController : ControllerBase
     }
 
     [HttpPatch("{id:int}/complete")]
+    [Authorize(Roles = "Doctor")]
     public async Task<IActionResult> Complete(int id)
     {
         var encounter = await _encounterService.CompleteAsync(id);

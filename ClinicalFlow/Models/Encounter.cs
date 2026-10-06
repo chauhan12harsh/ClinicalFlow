@@ -5,19 +5,16 @@ namespace ClinicalFlow.Models
 {
     public class Encounter
     {
-        public int EncounterId { get; set; }
+        public Guid EncounterId { get; set; } = Guid.NewGuid();
 
         // Foreign key to Patient
-        public int PatientId {  get; set; }
+        public Guid PatientId {  get; set; }
 
         // Foreign key to Doctor
-        public int DoctorId {  get; set; }
+        public Guid DoctorId {  get; set; }
 
-        [Required]
-        [MaxLength(500)]
         public string ChiefComplaint {  get; set; } = string.Empty;
 
-        [MaxLength(1000)]
         public string? Diagnosis { get; set; } = string.Empty;
 
         public string? ClinicalNotes {  get; set; } = string.Empty;
@@ -25,6 +22,7 @@ namespace ClinicalFlow.Models
         public EncounterStatus Status { get; set; } = EncounterStatus.InProgress;
 
         public DateTime StartedAt { get; set; } = DateTime.UtcNow;
+
         public DateTime? CompletedAt { get; set; }
 
         // Navigation properties

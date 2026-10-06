@@ -69,6 +69,9 @@ namespace ClinicalFlow.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DoctorId"));
 
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -87,6 +90,9 @@ namespace ClinicalFlow.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("DoctorId");
+
+                    b.HasIndex("ApplicationUserId")
+                        .IsUnique();
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -150,12 +156,14 @@ namespace ClinicalFlow.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PatientId"));
 
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
                     b.Property<DateOnly?>("DateOfBirth")
                         .HasColumnType("date");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -163,8 +171,7 @@ namespace ClinicalFlow.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Gender")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -177,10 +184,12 @@ namespace ClinicalFlow.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PatientId");
+
+                    b.HasIndex("ApplicationUserId")
+                        .IsUnique();
 
                     b.HasIndex("MedicalRecordNumber")
                         .IsUnique();
@@ -252,6 +261,17 @@ namespace ClinicalFlow.Migrations
                     b.ToTable("PrescriptionMedications");
                 });
 
+            modelBuilder.Entity("ClinicalFlow.Models.Doctor", b =>
+                {
+                    b.HasOne("ClinicalFlow.Models.ApplicationUser", "ApplicationUser")
+                        .WithOne()
+                        .HasForeignKey("ClinicalFlow.Models.Doctor", "ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+                });
+
             modelBuilder.Entity("ClinicalFlow.Models.Encounter", b =>
                 {
                     b.HasOne("ClinicalFlow.Models.Doctor", "Doctor")
@@ -269,6 +289,17 @@ namespace ClinicalFlow.Migrations
                     b.Navigation("Doctor");
 
                     b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("ClinicalFlow.Models.Patient", b =>
+                {
+                    b.HasOne("ClinicalFlow.Models.ApplicationUser", "ApplicationUser")
+                        .WithOne()
+                        .HasForeignKey("ClinicalFlow.Models.Patient", "ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("ClinicalFlow.Models.Prescription", b =>

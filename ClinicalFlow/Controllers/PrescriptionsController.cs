@@ -18,6 +18,7 @@ public class PrescriptionsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Doctor")]
     public async Task<IActionResult> Create(int encounterId, [FromBody] CreatePrescriptionRequest request)
     {
 
@@ -33,6 +34,7 @@ public class PrescriptionsController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Doctor,Nurse")]
     public async Task<IActionResult> GetByEncounterId(int encounterId)
     {
         var prescriptions = await _prescriptionService.GetByEncounterIdAsync(encounterId);

@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 namespace ClinicalFlow.DTOs.Encounters;
 
 public class CreateEncounterRequest
-{
-    [Range(1, int.MaxValue)]
-    public int PatientId { get; set; }
+{   
+    public Guid PatientId { get; set; }
 
-    [Range(1, int.MaxValue)]
-    public int DoctorId { get; set; }
+    public Guid DoctorId { get; set; }
 
     [Required]
     [StringLength(500, MinimumLength = 1)]

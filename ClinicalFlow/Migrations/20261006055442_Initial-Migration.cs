@@ -6,17 +6,35 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ClinicalFlow.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ApplicationUsers",
+                columns: table => new
+                {
+                    ApplicationUserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUsers", x => x.ApplicationUserId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Doctors",
                 columns: table => new
                 {
                     DoctorId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationUserId = table.Column<int>(type: "int", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Speciality = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -25,6 +43,12 @@ namespace ClinicalFlow.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Doctors", x => x.DoctorId);
+                    table.ForeignKey(
+                        name: "FK_Doctors_ApplicationUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "ApplicationUsers",
+                        principalColumn: "ApplicationUserId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,13 +61,20 @@ namespace ClinicalFlow.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ApplicationUserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Patients", x => x.PatientId);
+                    table.ForeignKey(
+                        name: "FK_Patients_ApplicationUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "ApplicationUsers",
+                        principalColumn: "ApplicationUserId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -124,6 +155,18 @@ namespace ClinicalFlow.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUsers_Email",
+                table: "ApplicationUsers",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Doctors_ApplicationUserId",
+                table: "Doctors",
+                column: "ApplicationUserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Doctors_Email",
                 table: "Doctors",
                 column: "Email",
@@ -143,6 +186,12 @@ namespace ClinicalFlow.Migrations
                 name: "IX_Encounters_StartedAt",
                 table: "Encounters",
                 column: "StartedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patients_ApplicationUserId",
+                table: "Patients",
+                column: "ApplicationUserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Patients_MedicalRecordNumber",
@@ -178,6 +227,9 @@ namespace ClinicalFlow.Migrations
 
             migrationBuilder.DropTable(
                 name: "Patients");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationUsers");
         }
     }
 }

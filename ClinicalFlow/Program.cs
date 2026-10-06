@@ -1,5 +1,6 @@
 using ClinicalFlow.Configuration;
 using ClinicalFlow.Data;
+using ClinicalFlow.Enums;
 using ClinicalFlow.Interfaces;
 using ClinicalFlow.Middleware;
 using ClinicalFlow.Models;
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IEncounterService, EncounterService>();
 builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
 
 // Bind JWT settings once
@@ -87,13 +89,11 @@ if (app.Environment.IsDevelopment())
 
     var email = builder.Configuration["DevelopmentSeed:Email"];
     var password = builder.Configuration["DevelopmentSeed:Password"];
-    var fullName = builder.Configuration["DevelopmentSeed:FullName"];
-    var role = builder.Configuration["DevelopmentSeed:Role"];
+    var fullName = builder.Configuration["DevelopmentSeed:FullName"];    
 
     if (!string.IsNullOrWhiteSpace(email) &&
         !string.IsNullOrWhiteSpace(password) &&
-        !string.IsNullOrWhiteSpace(fullName) &&
-        !string.IsNullOrWhiteSpace(role))
+        !string.IsNullOrWhiteSpace(fullName))       
     {
         email = email.Trim().ToLowerInvariant();
 
@@ -106,7 +106,7 @@ if (app.Environment.IsDevelopment())
             {
                 Email = email,
                 FullName = fullName.Trim(),
-                Role = role.Trim(),
+                Role = UserRole.Doctor,
                 CreatedAt = DateTime.UtcNow
             };
 

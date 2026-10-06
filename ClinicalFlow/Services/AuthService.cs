@@ -65,7 +65,7 @@ namespace ClinicalFlow.Services
                 new(JwtRegisteredClaimNames.Sub, user.ApplicationUserId.ToString()),
                 new(JwtRegisteredClaimNames.Email, user.Email),
                 new(ClaimTypes.Name, user.FullName),
-                new(ClaimTypes.Role, user.Role),
+                new(ClaimTypes.Role, user.Role.ToString()),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
